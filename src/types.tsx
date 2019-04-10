@@ -205,6 +205,12 @@ export interface FormikConfig<Values> extends FormikSharedConfig {
    * Submission handler
    */
   onSubmit: (values: Values, formikActions: FormikActions<Values>) => void;
+
+  /**
+   * Blur handler
+   */
+  onBlur: (field: string, success: boolean) => void;
+
   /**
    * A Yup Schema or a function that returns a Yup schema
    */
