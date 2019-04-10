@@ -209,7 +209,7 @@ export interface FormikConfig<Values> extends FormikSharedConfig {
   /**
    * Blur handler
    */
-  onBlur: (field: string, success: boolean) => void;
+  onBlur?: (field: string, success: boolean) => void;
 
   /**
    * A Yup Schema or a function that returns a Yup schema
