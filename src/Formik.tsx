@@ -3,6 +3,7 @@ import isEqual from 'react-fast-compare';
 import deepmerge from 'deepmerge';
 import { FormikProvider } from './connect';
 import warning from 'tiny-warning';
+import get from 'lodash/get';
 import {
   FormikActions,
   FormikConfig,
@@ -483,7 +484,11 @@ export class Formik<Values = FormikValues> extends React.Component<
       }));
 
       if (this.props.validateOnBlur) {
-        this.runValidations(this.state.values);
+        this.runValidations(this.state.values).then(combinedErrors => {
+          if (this.props.onBlur && field) {
+            this.props.onBlur(field, !get(combinedErrors, field));
+          }
+        });
       }
     };
     if (isString(eventOrPath)) {
