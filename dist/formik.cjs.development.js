@@ -361,7 +361,7 @@ var Formik = (function (_super) {
                 if (_this.props.validateOnBlur) {
                     _this.runValidations(_this.state.values).then(function (combinedErrors) {
                         if (_this.props.onBlur && field) {
-                            _this.props.onBlur(field, !get(combinedErrors, field));
+                            _this.props.onBlur(field, get(combinedErrors, field));
                         }
                     });
                 }
