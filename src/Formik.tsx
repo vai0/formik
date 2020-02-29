@@ -486,7 +486,7 @@ export class Formik<Values = FormikValues> extends React.Component<
       if (this.props.validateOnBlur) {
         this.runValidations(this.state.values).then(combinedErrors => {
           if (this.props.onBlur && field) {
-            this.props.onBlur(field, !get(combinedErrors, field));
+            this.props.onBlur(field, get(combinedErrors, field));
           }
         });
       }
