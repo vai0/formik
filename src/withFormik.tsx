@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Formik } from './Formik';
 import {
   FormikActions,
+  FormikErrors,
   FormikProps,
   FormikSharedConfig,
   FormikValues,
@@ -49,6 +50,11 @@ export interface WithFormikConfig<
    * Map props to the form values
    */
   mapPropsToStatus?: (props: Props) => any;
+
+  /**
+   * Map props to the form errors
+   */
+  mapPropsToErrors?: (props: Props) => FormikErrors<Values>;
 
   /**
    * @deprecated in 0.9.0 (but needed to break TS types)
@@ -154,6 +160,9 @@ export function withFormik<
             initialValues={mapPropsToValues(this.props)}
             initialStatus={
               config.mapPropsToStatus && config.mapPropsToStatus(this.props)
+            }
+            initialErrors={
+              config.mapPropsToErrors && config.mapPropsToErrors(this.props)
             }
             onSubmit={this.handleSubmit as any}
             render={this.renderFormComponent}

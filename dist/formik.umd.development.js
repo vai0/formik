@@ -4837,14 +4837,16 @@
           });
         };
 
-        _this.resetForm = function (nextValues) {
-          var values = nextValues ? nextValues : _this.props.initialValues;
+        _this.resetForm = function (nextState) {
+          var values = nextState && nextState.values ? nextState.values : _this.props.initialValues;
+          var errors = nextState && nextState.errors ? nextState.errors : _this.props.initialErrors || {};
           _this.initialValues = values;
+          _this.initialErrors = errors;
 
           _this.setState({
             isSubmitting: false,
             isValidating: false,
-            errors: {},
+            errors: errors,
             touched: {},
             error: undefined,
             status: _this.props.initialStatus,
@@ -4912,7 +4914,8 @@
           return {
             dirty: dirty,
             isValid: dirty ? _this.state.errors && Object.keys(_this.state.errors).length === 0 : isInitialValid !== false && isFunction$1(isInitialValid) ? isInitialValid(_this.props) : isInitialValid,
-            initialValues: _this.initialValues
+            initialValues: _this.initialValues,
+            initialErrors: _this.initialErrors
           };
         };
 
@@ -4939,7 +4942,7 @@
 
         _this.state = {
           values: props.initialValues || {},
-          errors: {},
+          errors: props.initialErrors || {},
           touched: {},
           isSubmitting: false,
           isValidating: false,
@@ -4949,6 +4952,7 @@
         _this.didMount = false;
         _this.fields = {};
         _this.initialValues = props.initialValues || {};
+        _this.initialErrors = props.initialErrors || {};
         warning$1(!(props.component && props.render), 'You should not use <Formik component> and <Formik render> in the same <Formik> component; <Formik render> will be ignored');
         warning$1(!(props.component && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik component> and <Formik children> in the same <Formik> component; <Formik children> will be ignored');
         warning$1(!(props.render && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik render> and <Formik children> in the same <Formik> component; <Formik children> will be ignored');
@@ -4970,7 +4974,7 @@
       Formik.prototype.componentDidUpdate = function (prevProps) {
         if (this.props.enableReinitialize && !reactFastCompare(prevProps.initialValues, this.props.initialValues)) {
           this.initialValues = this.props.initialValues;
-          this.resetForm(this.props.initialValues);
+          this.resetForm();
         }
       };
 
@@ -5266,6 +5270,7 @@
               validationSchema: config.validationSchema && this.validationSchema,
               initialValues: mapPropsToValues(this.props),
               initialStatus: config.mapPropsToStatus && config.mapPropsToStatus(this.props),
+              initialErrors: config.mapPropsToErrors && config.mapPropsToErrors(this.props),
               onSubmit: this.handleSubmit,
               render: this.renderFormComponent
             }));

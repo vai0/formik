@@ -392,13 +392,19 @@ var Formik = (function (_super) {
         _this.setFieldError = function (field, message) {
             _this.setState(function (prevState) { return (tslib_1.__assign({}, prevState, { errors: setIn(prevState.errors, field, message) })); });
         };
-        _this.resetForm = function (nextValues) {
-            var values = nextValues ? nextValues : _this.props.initialValues;
+        _this.resetForm = function (nextState) {
+            var values = nextState && nextState.values
+                ? nextState.values
+                : _this.props.initialValues;
+            var errors = nextState && nextState.errors
+                ? nextState.errors
+                : _this.props.initialErrors || {};
             _this.initialValues = values;
+            _this.initialErrors = errors;
             _this.setState({
                 isSubmitting: false,
                 isValidating: false,
-                errors: {},
+                errors: errors,
                 touched: {},
                 error: undefined,
                 status: _this.props.initialStatus,
@@ -461,6 +467,7 @@ var Formik = (function (_super) {
                         ? isInitialValid(_this.props)
                         : isInitialValid,
                 initialValues: _this.initialValues,
+                initialErrors: _this.initialErrors,
             };
         };
         _this.getFormikBag = function () {
@@ -471,7 +478,7 @@ var Formik = (function (_super) {
         };
         _this.state = {
             values: props.initialValues || {},
-            errors: {},
+            errors: props.initialErrors || {},
             touched: {},
             isSubmitting: false,
             isValidating: false,
@@ -481,6 +488,7 @@ var Formik = (function (_super) {
         _this.didMount = false;
         _this.fields = {};
         _this.initialValues = props.initialValues || {};
+        _this.initialErrors = props.initialErrors || {};
         warning(!(props.component && props.render), 'You should not use <Formik component> and <Formik render> in the same <Formik> component; <Formik render> will be ignored');
         warning(!(props.component && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik component> and <Formik children> in the same <Formik> component; <Formik children> will be ignored');
         warning(!(props.render && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik render> and <Formik children> in the same <Formik> component; <Formik children> will be ignored');
@@ -499,7 +507,7 @@ var Formik = (function (_super) {
         if (this.props.enableReinitialize &&
             !isEqual(prevProps.initialValues, this.props.initialValues)) {
             this.initialValues = this.props.initialValues;
-            this.resetForm(this.props.initialValues);
+            this.resetForm();
         }
     };
     Formik.prototype.runFieldLevelValidations = function (values) {
@@ -719,7 +727,7 @@ function withFormik(_a) {
             }
             C.prototype.render = function () {
                 var _a = this.props, children = _a.children, props = tslib_1.__rest(_a, ["children"]);
-                return (React.createElement(Formik, tslib_1.__assign({}, props, config, { validate: config.validate && this.validate, validationSchema: config.validationSchema && this.validationSchema, initialValues: mapPropsToValues(this.props), initialStatus: config.mapPropsToStatus && config.mapPropsToStatus(this.props), onSubmit: this.handleSubmit, render: this.renderFormComponent })));
+                return (React.createElement(Formik, tslib_1.__assign({}, props, config, { validate: config.validate && this.validate, validationSchema: config.validationSchema && this.validationSchema, initialValues: mapPropsToValues(this.props), initialStatus: config.mapPropsToStatus && config.mapPropsToStatus(this.props), initialErrors: config.mapPropsToErrors && config.mapPropsToErrors(this.props), onSubmit: this.handleSubmit, render: this.renderFormComponent })));
             };
             C.displayName = "WithFormik(" + componentDisplayName + ")";
             return C;
