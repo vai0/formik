@@ -567,7 +567,7 @@ export class Formik<Values = FormikValues> extends React.Component<
     }
   };
 
-  setFormikState = (s: any, callback?: (() => void)) =>
+  setFormikState = (s: any, callback?: () => void) =>
     this.setState(s, callback);
 
   validateForm = (values: Values) => {
@@ -651,9 +651,9 @@ export class Formik<Values = FormikValues> extends React.Component<
             ? render(props)
             : children // children come last, always called
               ? isFunction(children)
-                ? (children as ((
-                    props: FormikProps<Values>
-                  ) => React.ReactNode))(props as FormikProps<Values>)
+                ? (children as (props: FormikProps<Values>) => React.ReactNode)(
+                    props as FormikProps<Values>
+                  )
                 : !isEmptyChildren(children)
                   ? React.Children.only(children)
                   : null
