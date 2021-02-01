@@ -442,7 +442,6 @@
               return ((t = this.props.children), Array.isArray(t) ? t[0] : t)(
                 this.state.value
               );
-              var t;
             }),
             r
           );
@@ -577,7 +576,6 @@
     return (
       !(!ct(t) || ((e = t), yt && yt in e)) && (ht(t) ? St : jt).test(gt(t))
     );
-    var e;
   }
   function wt(t, e) {
     var r = (function (t, e) {
