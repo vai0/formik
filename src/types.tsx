@@ -60,6 +60,8 @@ export interface FormikComputedProps<Values> {
   readonly isValid: boolean;
   /** initialValues */
   readonly initialValues: Values;
+  /** The initial errors of the form */
+  readonly initialErrors: FormikErrors<Values>;
 }
 
 /**
@@ -100,7 +102,7 @@ export interface FormikActions<Values> {
   /** Validate field value */
   validateField(field: string): void;
   /** Reset form */
-  resetForm(nextValues?: Values): void;
+  resetForm(nextState?: FormikState<Values>): void;
   /** Submit the form imperatively */
   submitForm(): void;
   /** Set Formik state, careful! */
@@ -195,6 +197,11 @@ export interface FormikConfig<Values> extends FormikSharedConfig {
    * Initial status
    */
   initialStatus?: any;
+
+  /**
+   * Initial object map of field names to specific error for that field
+   */
+  initialErrors?: FormikErrors<Values>;
 
   /**
    * Reset handler

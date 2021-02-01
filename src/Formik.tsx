@@ -39,6 +39,7 @@ export class Formik<Values = FormikValues> extends React.Component<
   };
 
   initialValues: Values;
+  initialErrors: FormikErrors<Values>;
   didMount: boolean;
   hcCache: {
     [key: string]: (e: unknown | React.ChangeEvent<any>) => void;
@@ -55,7 +56,7 @@ export class Formik<Values = FormikValues> extends React.Component<
     super(props);
     this.state = {
       values: props.initialValues || ({} as any),
-      errors: {},
+      errors: props.initialErrors || ({} as any),
       touched: {},
       isSubmitting: false,
       isValidating: false,
@@ -65,6 +66,7 @@ export class Formik<Values = FormikValues> extends React.Component<
     this.didMount = false;
     this.fields = {};
     this.initialValues = props.initialValues || ({} as any);
+    this.initialErrors = props.initialErrors || ({} as any);
     warning(
       !(props.component && props.render),
       'You should not use <Formik component> and <Formik render> in the same <Formik> component; <Formik render> will be ignored'
@@ -116,7 +118,7 @@ export class Formik<Values = FormikValues> extends React.Component<
     ) {
       this.initialValues = this.props.initialValues;
       // @todo refactor to use getDerivedStateFromProps?
-      this.resetForm(this.props.initialValues);
+      this.resetForm();
     }
   }
 
@@ -533,15 +535,23 @@ export class Formik<Values = FormikValues> extends React.Component<
     }));
   };
 
-  resetForm = (nextValues?: Values) => {
-    const values = nextValues ? nextValues : this.props.initialValues;
+  resetForm = (nextState?: FormikState<Values>) => {
+    const values =
+      nextState && nextState.values
+        ? nextState.values
+        : this.props.initialValues;
+    const errors =
+      nextState && nextState.errors
+        ? nextState.errors
+        : this.props.initialErrors || {};
 
     this.initialValues = values;
+    this.initialErrors = errors;
 
     this.setState({
       isSubmitting: false,
       isValidating: false,
-      errors: {},
+      errors,
       touched: {},
       error: undefined,
       status: this.props.initialStatus,
@@ -610,6 +620,7 @@ export class Formik<Values = FormikValues> extends React.Component<
           ? (isInitialValid as (props: this['props']) => boolean)(this.props)
           : (isInitialValid as boolean),
       initialValues: this.initialValues,
+      initialErrors: this.initialErrors,
     };
   };
 
