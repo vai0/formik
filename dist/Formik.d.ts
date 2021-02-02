@@ -14,7 +14,6 @@ export declare class Formik<Values = FormikValues> extends React.Component<
   static defaultProps: {
     validateOnChange: boolean;
     validateOnBlur: boolean;
-    isInitialValid: boolean;
     enableReinitialize: boolean;
   };
   initialValues: Values;

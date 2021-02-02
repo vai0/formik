@@ -732,7 +732,6 @@ function (_super) {
   Formik.defaultProps = {
     validateOnChange: true,
     validateOnBlur: true,
-    isInitialValid: false,
     enableReinitialize: false
   };
   return Formik;
