@@ -608,7 +608,7 @@ function (_super) {
       var dirty = !isEqual(_this.initialValues, _this.state.values);
       return {
         dirty: dirty,
-        isValid: dirty ? _this.state.errors && Object.keys(_this.state.errors).length === 0 : isInitialValid !== false && isFunction(isInitialValid) ? isInitialValid(_this.props) : isInitialValid,
+        isValid: typeof isInitialValid !== 'undefined' ? dirty ? _this.state.errors && Object.keys(_this.state.errors).length === 0 : isInitialValid !== false && isFunction(isInitialValid) ? isInitialValid(_this.props) : isInitialValid : _this.state.errors && Object.keys(_this.state.errors).length === 0,
         initialValues: _this.initialValues,
         initialErrors: _this.initialErrors
       };

@@ -5,12 +5,12 @@ export interface FormikValues {
 export declare type FormikErrors<Values> = {
   [K in keyof Values]?: Values[K] extends object
     ? FormikErrors<Values[K]>
-    : string;
+    : string
 };
 export declare type FormikTouched<Values> = {
   [K in keyof Values]?: Values[K] extends object
     ? FormikTouched<Values[K]>
-    : boolean;
+    : boolean
 };
 export interface FormikState<Values> {
   values: Values;
@@ -73,13 +73,13 @@ export interface FormikHandlers {
   handleBlur(e: React.FocusEvent<any>): void;
   handleBlur<T = string | any>(
     fieldOrEvent: T
-  ): T extends string ? (e: any) => void : void;
+  ): T extends string ? ((e: any) => void) : void;
   handleChange(e: React.ChangeEvent<any>): void;
   handleChange<T = unknown | React.ChangeEvent<any>>(
     field: T
   ): T extends React.ChangeEvent<any>
     ? void
-    : (e: unknown | React.ChangeEvent<any>) => void;
+    : ((e: unknown | React.ChangeEvent<any>) => void);
 }
 export interface FormikSharedConfig {
   validateOnChange?: boolean;
@@ -89,7 +89,7 @@ export interface FormikSharedConfig {
 }
 export interface FormikConfig<Values> extends FormikSharedConfig {
   component?: React.ComponentType<FormikProps<Values>> | React.ReactNode;
-  render?: (props: FormikProps<Values>) => React.ReactNode;
+  render?: ((props: FormikProps<Values>) => React.ReactNode);
   children?:
     | ((props: FormikProps<Values>) => React.ReactNode)
     | React.ReactNode;
@@ -100,7 +100,9 @@ export interface FormikConfig<Values> extends FormikSharedConfig {
   onSubmit: (values: Values, formikActions: FormikActions<Values>) => void;
   onBlur?: (field: string, error: string | undefined) => void;
   validationSchema?: any | (() => any);
-  validate?: (values: Values) => void | object | Promise<FormikErrors<Values>>;
+  validate?: ((
+    values: Values
+  ) => void | object | Promise<FormikErrors<Values>>);
 }
 export declare type FormikProps<Values> = FormikSharedConfig &
   FormikState<Values> &
@@ -116,8 +118,8 @@ export declare type FormikContext<Values> = FormikProps<Values> &
   Pick<FormikConfig<Values>, 'validate' | 'validationSchema'>;
 export interface SharedRenderProps<T> {
   component?: string | React.ComponentType<T | void>;
-  render?: (props: T) => React.ReactNode;
-  children?: (props: T) => React.ReactNode;
+  render?: ((props: T) => React.ReactNode);
+  children?: ((props: T) => React.ReactNode);
 }
 export declare type GenericFieldHTMLAttributes =
   | React.InputHTMLAttributes<HTMLInputElement>
